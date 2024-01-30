@@ -1,0 +1,1 @@
+g++ -static *.cpp -o myapp.out -I ../tmwp/include/ -L../tmwp/lib -ltmwplib

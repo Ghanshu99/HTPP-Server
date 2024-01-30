@@ -1,0 +1,51 @@
+#ifndef ___TMWP
+#define ___TMWP 13
+#include<iostream>
+#include<map>
+using namespace std;
+namespace tmwp
+{
+class Request
+{
+public:
+char *method;
+char *resource;
+char *mimeType;
+char **data;
+int dataCount;
+char isClientSideTechnologyResource;
+string forwardTo;
+map<string,string> keyValues;
+void setKeyValue(string k,string v);
+string getValue(string k);
+string get(string name);
+void forward(string forwardTo);
+};
+class Response
+{
+private:
+int clientSocketDescriptor;
+bool isClosed;
+bool headerCreated;
+void createHeader();
+public:
+Response(int clientSocketDescriptor);
+void write(const char *str);
+void write(string str);
+//you need to overload more methods for primitive types
+void Close();
+};
+class TMWebProjector
+{
+private:
+int portNumber;
+map<string, void (*)(Request &,Response &)>requestMappings;
+public:
+TMWebProjector(int portNumber);
+~TMWebProjector();
+void start();
+void onRequest(string url,void(*ptrOnRequest)(Request &,Response &));
+};
+}
+#endif
+
